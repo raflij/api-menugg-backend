@@ -3,6 +3,7 @@ const validator = require('email-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const requestIp = require('request-ip');
 
 const UserModel = require('../models/userModel');
 const ActivityController = require('./activityController')
@@ -53,10 +54,10 @@ class AuthController {
             if (!isPasswordValid) {
                 return res.status(200).json({ response: false, message: 'Email atau password kamu salah' });
             }
-            const location = await ActivityController.userLocation();
+            const ip_address = requestIp.getClientIp(req);
+            const location = await ActivityController.userLocation(ip_address);
             const activity = 'login'
             const message = 'Login from ' + location.stateProv + ', ' + location.countryCode
-            const ip_address = location.ipAddress;
             const res2 = await ActivityController.saveActivity(email, activity, message, ip_address);
             const token = jwt.sign({ userId: user.id }, JWT_SECRET_KEY, { expiresIn: '1h' });
             res.json({ response: true, message: 'Login berhasil', token });

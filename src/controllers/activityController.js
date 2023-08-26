@@ -3,9 +3,9 @@ const UserModel = require('../models/userModel');
 const axios = require('axios');
 
 class ActivityController {
-    async userLocation() {
+    async userLocation(ip_address) {
         try {
-            const res = await axios.get('https://api.db-ip.com/v2/free/self');
+            const res = await axios.get('https://api.db-ip.com/v2/free/'+ip_address);
             return res.data;
         } catch (error) {
             return error;
