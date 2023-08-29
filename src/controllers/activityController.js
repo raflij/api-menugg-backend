@@ -26,7 +26,6 @@ class ActivityController {
         }
     }
     async recentActivity(req, res) {
-        const cok = req.userId;
         try {
             const user = await UserModel.findOne({ attributes: ['email'], where: { id: req.userId } });
             if (!user) {
@@ -42,7 +41,7 @@ class ActivityController {
             })
             return res.status(200).json({ response: true, message: 'recentActivity...', activity: resolt });
         } catch (error) {
-            return res.status(200).json({ response: false, message: 'Terjadi kesalahanb', error, cok });
+            return res.status(200).json({ response: false, message: 'Terjadi kesalahan', error });
         }
     }
 }

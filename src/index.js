@@ -3,7 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 
-const routers = require("./routes/authRoutes");
+const authRouter = require("./routes/authRoutes");
+const dashboardRouter = require("./routes/dashboardRoutes");
+const restaurantRouter = require("./routes/restaurantRoutes");
 const sequelize = require('./database/sequelize')
 
 class App {
@@ -20,7 +22,9 @@ class App {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
 
-        this.app.use("/api", routers);
+        this.app.use("/api", authRouter);
+        this.app.use("/api", dashboardRouter);
+        this.app.use("/api", restaurantRouter);
 
         try {
             await sequelize.authenticate();
